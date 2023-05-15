@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
+import ToDoInput from 'app/components/TodoInput';
+import TodoItem from 'app/components/TodoItem';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -25,20 +27,13 @@ const Title = styled.h1`
 
 const TodoList = styled.div``;
 
-const TodoItem = styled.div`
-  display: flex;
-  alignm-items: center;
-  padding: 15px 25px;
-  width: 100%;
-  font-size: 1.2em;
-  border-bottom: 1px solid orange;
-`;
-
-const TodoCheck = styled.input`
-  margin-right: 15px;
-`;
-
 export function HomePage() {
+  const [todoList, setTodoList] = React.useState<ITodoItem[]>([
+    { id: '1', content: 'first', completed: false, editing: false },
+    { id: '2', content: 'second', completed: false, editing: false },
+    { id: '3', content: 'third', completed: false, editing: false },
+  ]);
+  const [number, setnumber] = React.useState();
   return (
     <>
       <Helmet>
@@ -48,10 +43,13 @@ export function HomePage() {
       <Wrapper>
         <Box>
           <Title>TO-DO LIST</Title>
+          <ToDoInput
+            setTodoList={(todo: ITodoItem) => setTodoList([todo, ...todoList])}
+          />
           <TodoList>
-            <TodoItem>
-              <TodoCheck type="checkbox" />?
-            </TodoItem>
+            {todoList.map(todo => (
+              <TodoItem todo={todo} />
+            ))}
           </TodoList>
         </Box>
       </Wrapper>
